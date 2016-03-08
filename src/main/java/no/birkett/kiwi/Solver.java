@@ -493,6 +493,7 @@ public class Solver {
      * @throws InternalSolverError The value of the objective function is unbounded.
      */
     void optimize(Row objective) {
+        System.out.println("OPTIMIZE: " + objective);
         while (true) {
             System.out.println("...optimize...");
             Symbol entering = getEnteringSymbol(objective);
