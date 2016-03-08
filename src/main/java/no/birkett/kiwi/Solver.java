@@ -47,7 +47,7 @@ public class Solver {
      * @throws UnsatisfiableConstraintException      The given constraint is required and cannot be satisfied.
      */
     public void addConstraint(Constraint constraint) throws DuplicateConstraintException, UnsatisfiableConstraintException {
-
+         System.out.println("==== ADD CONSTRAINT START ====");
         if (cns.containsKey(constraint)) {
             throw new DuplicateConstraintException(constraint);
         }
@@ -76,7 +76,12 @@ public class Solver {
 
         this.cns.put(constraint, tag);
 
+        System.out.println("--BEFORE OPTIMIZE--");
+        System.out.println(rows);
         optimize(objective);
+        System.out.println("--AFTER OPTIMIZE--");
+        System.out.println(rows);
+        System.out.println("");
     }
 
     public void removeConstraint(Constraint constraint) throws UnknownConstraintException, InternalSolverError{
@@ -489,7 +494,9 @@ public class Solver {
      */
     void optimize(Row objective) {
         while (true) {
+            System.out.println("...optimize...");
             Symbol entering = getEnteringSymbol(objective);
+            System.out.println(entering);
             if (entering.getType() == Symbol.Type.INVALID) {
                 return;
             }

@@ -27,4 +27,9 @@ public class Symbol {
         return type;
     }
 
+    public String toString() {
+        int offset = "no.birkett.kiwi.Symbol@".length();
+        return "" + type + "@"+super.toString().substring(offset,offset+2);
+    }
+
 }

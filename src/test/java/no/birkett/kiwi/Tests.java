@@ -23,6 +23,30 @@ public class Tests {
     }
 
     @Test
+    public void compare1() throws UnsatisfiableConstraintException, DuplicateConstraintException {
+        Solver solver = new Solver();
+        Variable x = new Variable("x");
+
+
+        solver.addConstraint(Symbolics.greaterThanOrEqualTo(x, 100));
+        solver.updateVariables();
+
+        solver.addConstraint(Symbolics.modifyStrength(
+           Symbolics.greaterThanOrEqualTo(x, 150),
+           Strength.WEAK
+        ));
+
+        solver.updateVariables();
+
+//        solver.addConstraint(Symbolics.modifyStrength(
+//            Symbolics.lessThanOrEqualTo(x, 125),
+//            Strength.MEDIUM
+//        ));
+//        solver.updateVariables();
+        System.out.println(x);
+    }
+
+    @Test
     public void simple0() throws UnsatisfiableConstraintException, DuplicateConstraintException {
         Solver solver = new Solver();
         Variable x = new Variable("x");

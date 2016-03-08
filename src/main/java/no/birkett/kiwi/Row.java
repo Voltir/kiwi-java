@@ -10,6 +10,10 @@ import java.util.Set;
  */
 public class Row {
 
+    public String toString() {
+        return "Row(" + constant + ", " + cells + ")";
+    }
+
     private double constant;
 
     private Map<Symbol, Double> cells = new LinkedHashMap<>();
