@@ -56,6 +56,9 @@ public class Solver {
         Row row = createRow(constraint, tag);
         Symbol subject = chooseSubject(row, tag);
 
+        System.out.println("Created row: " + row);
+        System.out.println("Chosen subject: " + subject);
+
         if(subject.getType() == Symbol.Type.INVALID && allDummies(row)){
             if (!Util.nearZero(row.getConstant())) {
                 throw new UnsatisfiableConstraintException(constraint);
@@ -327,10 +330,13 @@ public class Solver {
             }
         }
 
+        System.out.println("AA? " + row);
+
         switch (constraint.getOp()) {
             case OP_LE:
             case OP_GE: {
                 double coeff = constraint.getOp() == RelationalOperator.OP_LE ? 1.0 : -1.0;
+                System.out.println("coeff = " + coeff);
                 Symbol slack = new Symbol(Symbol.Type.SLACK);
                 tag.marker = slack;
                 row.insert(slack, coeff);
@@ -338,6 +344,7 @@ public class Solver {
                     Symbol error = new Symbol(Symbol.Type.ERROR);
                     tag.other = error;
                     row.insert(error, -coeff);
+                    System.out.println("BB? " + row);
                     this.objective.insert(error, constraint.getStrength());
                 }
                 break;
