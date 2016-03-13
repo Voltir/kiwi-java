@@ -65,13 +65,32 @@ public class Tests {
     }
 
     @Test
-    public void simple1() throws DuplicateConstraintException, UnsatisfiableConstraintException {
+    public void simple1() throws DuplicateConstraintException, UnsatisfiableConstraintException, UnknownEditVariableException, DuplicateEditVariableException, RequiredFailureException {
         Variable x = new Variable("x");
         Variable y = new Variable("y");
         Solver solver = new Solver();
+        solver.addEditVariable(x, Strength.MEDIUM);
+        solver.addEditVariable(y, Strength.WEAK);
         solver.addConstraint(Symbolics.equals(x, y));
         solver.updateVariables();
         assertEquals(x.getValue(), y.getValue(), EPSILON);
+        System.out.println("=== 5.0 ===");
+        solver.suggestValue(x, 5.0);
+        solver.updateVariables();
+        System.out.println(x.getValue());
+        System.out.println(y.getValue());
+
+//        System.out.println("=== 10.0 ===");
+//        solver.suggestValue(y, 10.0);
+//        solver.updateVariables();
+//        System.out.println(x.getValue());
+//        System.out.println(y.getValue());
+
+        System.out.println("=== 42.0 ===");
+        solver.suggestValue(x, 42.0);
+        solver.updateVariables();
+        System.out.println(x.getValue());
+        System.out.println(y.getValue());
     }
 
     @Test

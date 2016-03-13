@@ -205,7 +205,9 @@ public class Solver {
 
         List<Term> terms = new ArrayList<>();
         terms.add(new Term(variable));
+        System.out.println("~~ ADDING CONSTRAINT FOR : " + variable);
         Constraint constraint = new Constraint(new Expression(terms), RelationalOperator.OP_EQ, strength);
+        System.out.println("~~ : " + constraint);
 
         try {
             addConstraint(constraint);
@@ -250,6 +252,7 @@ public class Solver {
 
         Row row = rows.get(info.tag.marker);
         if(row != null){
+            System.out.println("SUGGEST: HIT FIRST!");
             if(row.add(-delta) < 0.0){
                 infeasibleRows.add(info.tag.marker);
             }
@@ -259,6 +262,7 @@ public class Solver {
 
         row = rows.get(info.tag.other);
         if(row != null){
+            System.out.println("SUGGEST: HIT SECOND!");
             if(row.add(delta) < 0.0){
                 infeasibleRows.add(info.tag.other);
             }
@@ -266,10 +270,19 @@ public class Solver {
             return;
         }
 
+        System.out.println("SUGGEST: HIT THIRD!");
         for(Symbol s: rows.keySet()){
+            System.out.println(s);
             Row currentRow = rows.get(s);
+            System.out.println("currentRow = " + currentRow);
             double coefficient = currentRow.coefficientFor(info.tag.marker);
+            System.out.println("coefficient = " + coefficient);
+            System.out.println(coefficient != 0.0 && (currentRow.getConstant() + delta * coefficient) < 0.0 && s.getType() != Symbol.Type.EXTERNAL);
+            System.out.println(coefficient != 0.0);
+            System.out.println(currentRow.getConstant() + delta * coefficient < 0.0);
+            System.out.println(s.getType() != Symbol.Type.EXTERNAL);
             if(coefficient != 0.0 && currentRow.add(delta * coefficient) < 0.0 && s.getType() != Symbol.Type.EXTERNAL){
+                System.out.println("ITS INFEASIBLE");
                 infeasibleRows.add(s);
             }
         }
@@ -536,6 +549,7 @@ public class Solver {
     }
 
     void dualOptimize() throws InternalSolverError{
+        System.out.println("dualOptimize! " + infeasibleRows);
         while(!infeasibleRows.isEmpty()){
             Symbol leaving = infeasibleRows.remove(infeasibleRows.size() - 1);
             Row row = rows.get(leaving);
